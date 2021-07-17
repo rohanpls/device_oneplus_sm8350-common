@@ -87,6 +87,13 @@ on init
 on post-fs
     chmod 0755 /sys/kernel/debug/tracing
 
+    # USB 2.0 Force Fast Charge
+    chown system system /sys/module/oplus_chg/parameters/force_fast_charge
+    chown system system /sys/module/oplus_chg/parameters/ffc_val
+
+    # Vibration level (intensity)
+    chown system system /sys/devices/platform/soc/88c000.i2c/i2c-10/10-005a/leds/vibrator/level
+
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
@@ -249,6 +256,38 @@ on boot
     write /sys/bus/coresight/devices/coresight-tmc-etr/enable_sink 1
     write /sys/bus/coresight/devices/coresight-stm/enable_source 1
     write /sys/bus/coresight/devices/coresight-stm/hwevent_enable 0
+
+    # DC-Dimming
+    chmod 0660 /sys/devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-DSI-1/dimlayer_bl_en
+    chown system system /sys/devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-DSI-1/dimlayer_bl_en
+
+    # Game Mode
+    chown system system /proc/touchpanel/game_switch_enable
+    chmod 0666 /proc/touchpanel/game_switch_enable
+
+    # High Brightness Mode
+    chown system graphics /sys/devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-DSI-1/hbm
+    chmod 0666 /sys/devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/card0-DSI-1/hbm
+
+    # KCAL Calibration
+    chown system graphics /sys/module/msm_drm/parameters/kcal_red
+    chmod 0666 /sys/module/msm_drm/parameters/kcal_red
+    chown system graphics /sys/module/msm_drm/parameters/kcal_green
+    chmod 0666 /sys/module/msm_drm/parameters/kcal_green
+    chown system graphics /sys/module/msm_drm/parameters/kcal_blue
+    chmod 0666 /sys/module/msm_drm/parameters/kcal_blue
+    chown system graphics /sys/module/msm_drm/parameters/kcal_sat
+    chmod 0666 /sys/module/msm_drm/parameters/kcal_sat
+    chown system graphics /sys/module/msm_drm/parameters/kcal_hue
+    chmod 0666 /sys/module/msm_drm/parameters/kcal_hue
+    chown system graphics /sys/module/msm_drm/parameters/kcal_val
+    chmod 0666 /sys/module/msm_drm/parameters/kcal_val
+    chown system graphics /sys/module/msm_drm/parameters/kcal_cont
+    chmod 0666 /sys/module/msm_drm/parameters/kcal_cont
+
+    # Measured FPS
+    chown system graphics /sys/class/drm/sde-crtc-0/measured_fps
+    chmod 0666 /sys/class/drm/sde-crtc-0/measured_fps
 
 # msm specific files that need to be created on /data
 on post-fs-data
